@@ -5,7 +5,8 @@ class error extends Document {
         super();
         this.script = String;
         this.log = String;
-        this.data = Object
+        this.data = Object;
+        this.idTransaction = String;
     }
 
     static collectionName() {

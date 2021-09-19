@@ -3,28 +3,9 @@ const dbs = require('../models/dbs');
 const transaction = require('../models/transactions');
 const ScriptManager = require('../utils/ScriptManager');
 var router = express.Router();
+const workerpool = require("workerpool");
+const pool = workerpool.pool("./utils/worker.js");
 
-const workerpool = require('workerpool');
-
-function rune(id) {
-    console.log("entra la transaction");
-    console.log(id);
-    workerpool.workerEmit({
-        tran: id
-    });
-
-    return 1;
-
-}
-
-
-const pool = workerpool.pool();
-pool.exec('rune', [], {
-    on: function (payload) {
-        console.log("get in");
-        ScriptManager.run(payload.tran);
-    }
-});
 
 router.post("/transaction", function (req, res, next) {
     try {
@@ -37,17 +18,19 @@ router.post("/transaction", function (req, res, next) {
         })
 
         tran.save().then((L) => {
-
-            pool.exec(rune, [1]).then(function (result) {
-                console.log(result);
-                res.status(200).json({ receive: true });
+            console.log(L);
+            pool.exec('rune', [{script: L.script,data: L.data, connection: L.connection, _id: L._id}]).then(function (result) {
+                console.log("resultado dentro del worker");
+                
             })
                 .catch(function (err) {
                     console.log(err);
-                    res.status(500).json({ receive: false });
+                    
                 })
 
-
+            res.status(200).json({ receive: true });
+        }).catch(()=>{
+            res.status(500).json({ receive: false });
         });
 
 

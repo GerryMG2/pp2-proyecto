@@ -7,16 +7,16 @@ block content
     input#hostInput.form-control(type='text' aria-describedby='hostHelp' name="_id" placeholder='Host' value=model._id hidden)
     .form-group
       label(for='name') Connection's Name
-      input#hostInput.form-control(type='text' aria-describedby='hostHelp' name="name" placeholder='Name' value=model.host)
+      input#hostInput.form-control(type='text' aria-describedby='hostHelp' name="name" placeholder='Name' value=model.name)
     .form-group
       label(for='host') Host
-      input#hostInput.form-control(type='text' aria-describedby='hostHelp' name="host" placeholder='Host' value=model.name)
+      input#hostInput.form-control(type='text' aria-describedby='hostHelp' name="host" placeholder='Host' value=model.host)
     .form-group
       label(for='username') Username
       input#hostInput.form-control(type='text' aria-describedby='hostHelp' name="username" placeholder='Username'  value=model.username)
     .form-group
       label(for='database') Database
-      input#hostInput.form-control(type='text' aria-describedby='hostHelp' name="database" placeholder='Database'  value=model.username)
+      input#hostInput.form-control(type='text' aria-describedby='hostHelp' name="database" placeholder='Database'  value=model.database)
     .form-group
       label(for='port') Port Number
       input#hostInput.form-control(type='text' aria-describedby='PortHelp' name="port" placeholder='Port' value=model.port)
