@@ -22,6 +22,23 @@ router.get('/db', function (req, res, next) {
 
 });
 
+/* GET Error List */
+router.get('/errlist', function (req, res, next) {
+  try {
+    listdbs = [];
+    dbs.find({}, {}).then(function (ds) {
+      listdbs = ds;
+      console.log(ds);
+      console.log(listdbs);
+      res.render('error_list', { title: 'errlst', model: {}, list: listdbs });
+    });
+
+  } catch (error) {
+    res.render('index', { title: 'DB', model: {}, error: "Error en la base", list:[] });
+  }
+
+});
+
 router.get('/db/:id', function (req, res, next) {
   try {
     console.log(req.params.id);
