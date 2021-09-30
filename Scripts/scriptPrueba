@@ -1,0 +1,22 @@
+const blitz = require("./lib");
+const pgPromise = require("pg-promise")
+
+
+
+/**
+ * 
+ * @param {*} data 
+ * @param {pgPromise.IDatabase<{}, pg.IClient>} db 
+ * @param {function(boolean,string)} cb
+ */
+function init(data, db, cb) {
+    
+}
+
+
+
+
+
+
+
+blitz.init(init);
