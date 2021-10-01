@@ -20,6 +20,7 @@ block content
               td.u-table-cell=val.script
               td.u-table-cell
                 button(href='/log' type="button" id="errorbtn" onclick='showLog('+'"'+ val.log +'"'+')' class="btn btn-warning btn-sm") log
+                button(href='/log' type="button" id="errorbtn" onclick="showLog("+"'"+ JSON.stringify(val.data) +"'"+")" class="btn btn-warning btn-sm") Data
                 button(href='' type="button" onclick='deleteE('+'"'+ val._id +'"'+')' class="btn btn-danger btn-sm") delete
                 buttom(href='' type="button" class="btn btn-info btn-sm") run again
 block content_scripts

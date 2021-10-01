@@ -1,0 +1,11 @@
+extends layout
+block content
+    form(method="POST" ).mb-3
+        .form-group
+            label(for='name') scriptName
+            input#hostInput.form-control(type='text' aria-describedby='hostHelp' name="name" placeholder='Name' value=model.name)
+        .form-group
+            label(for='name') code
+            textarea#hostInput.form-control(type='text' aria-describedby='hostHelp' name="name" placeholder='Name' rows="50" cols="50")=content
+block content_scripts
+    script(src="/javascripts/createscript.js") 

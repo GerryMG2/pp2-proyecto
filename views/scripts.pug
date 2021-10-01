@@ -1,0 +1,26 @@
+extends layout 
+
+block content
+      table(class='table table-striped')
+        colgroup
+          col(width='11.6%')
+          col(width='34.8%')
+          col(width='28.6%')
+          col(width='25%')
+        thead(style='height: 65px;' class="thead-light")
+            th.u-table-cell #
+            th.u-table-cell Name
+            th.u-table-cell type
+            th.u-table-cell action
+        tbody
+          each val,index in list
+            tr(style='height: 65px;')
+              td.u-table-cell=index+1
+              td.u-table-cell=val.split(".")[0]
+              td.u-table-cell=val.split(".")[1]
+              td.u-table-cell
+                a(href=`/scripts/${val.split(".")[0]}` type="button" id="errorbtn" onclick='showLog('+'"'+ val.log +'"'+')' class="btn btn-warning btn-sm") Edit
+                button(href='' type="button" onclick='deleteE('+'"'+ val._id +'"'+')' class="btn btn-danger btn-sm") Delete
+                buttom(href='' type="button" class="btn btn-info btn-sm") Duplicar
+block content_scripts
+  script(src="/javascripts/main.js") 
