@@ -1,6 +1,7 @@
 var express = require('express');
 const db = require('../db');
 const dbs = require('../models/dbs');
+const dbErr = require("../models/errors");
 var router = express.Router();
 
 
@@ -26,7 +27,7 @@ router.get('/db', function (req, res, next) {
 router.get('/errlist', function (req, res, next) {
   try {
     listdbs = [];
-    dbs.find({}, {}).then(function (ds) {
+    dbErr.find({}, {}).then(function (ds) {
       listdbs = ds;
       console.log(ds);
       console.log(listdbs);
@@ -97,6 +98,18 @@ router.post('/db/test', async function (req, res, next) {
 
 });
 
+router.get('/errlist/:id', function (req, res, next) {
+  try {
+    listdbs = [];
+    dbErr.deleteOne({_id: req.params.id}).then(function(numrRemoven){
+      res.redirect("/errlist");
+    })
+
+  } catch (error) {
+    res.render('index', { title: 'DB', model: {}, error: "No se pudo borrar el Error", list:[] });
+  }
+
+});
 
 
 
