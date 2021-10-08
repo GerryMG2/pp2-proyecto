@@ -29,7 +29,7 @@ router.get('/errlist', function (req, res, next) {
     listdbs = [];
     dbErr.find({}, {}).then(function (ds) {
       listdbs = ds;
-      console.log(ds);
+      
       console.log(listdbs);
       res.render('error_list', { title: 'errlst', model: {}, list: listdbs });
     });

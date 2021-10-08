@@ -1,5 +1,6 @@
 
 const { fork } = require('child_process');
+const db = require("../dbM");
 const errors = require("../models/errors");
 
 class ScriptManager {

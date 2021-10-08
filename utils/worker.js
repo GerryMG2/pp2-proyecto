@@ -1,6 +1,6 @@
 const workerpool = require('workerpool');
 const ScriptManager = require("./ScriptManager");
-const db = require("../dbM");
+
 const transaction = require("../models/transactions");
 
 function rune(obj) {
