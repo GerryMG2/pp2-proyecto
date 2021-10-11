@@ -1,11 +1,12 @@
 var connect = require('camo').connect;
- 
+const {URI_MONGO} = require("../config");
 var db;
-var uri = 'nedb://data';
+var uri = URI_MONGO;
 connect(uri).then(function(dbd) {
-    database = dbd;
+    db = dbd;
     
 });
+
 
 module.exports = db;
 

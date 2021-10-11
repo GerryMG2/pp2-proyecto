@@ -20,7 +20,7 @@ function init(data, db, cb) {
 
         }).then((d) => {
             console.log(d);
-            cb(true, "");
+            cb(true, "Datos actualizados");
         }).catch((err) => {
             console.log(err);
             cb(false, err);

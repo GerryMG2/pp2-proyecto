@@ -1,7 +1,8 @@
 
 const { fork } = require('child_process');
-const db = require("../dbM");
-const errors = require("../models/errors");
+const db = require("./dbM");
+const errors = require("./externalModels/errors");
+// const errors = require("../models/errors");
 
 class ScriptManager {
     constructor(){
@@ -24,26 +25,30 @@ class ScriptManager {
             conn: obj.connection
         }
         forked.on("message", (msg) => {
-        
-            console.log("msg: ")
-            console.log(msg);
-            if(msg.status){
-                
+            if(msg.send){
+                forked.send(ob);
             }else{
-                let err = errors.create({
-                    script: obj.script,
-                    log: msg.log,
-                    data: obj.data,
-                    idTransaction: obj._id
-                });
-                err.save().then((L)=>{
+                console.log("msg: ")
+                console.log(msg);
+                if(msg.status){
                     
-                    console.log("save Error");
-                });
+                }else{
+                    let err = errors.create({
+                        script: obj.script,
+                        log: msg.log,
+                        data: obj.data,
+                        idTransaction: obj._id.id
+                    });
+                    err.save().then((L)=>{
+                        
+                        console.log("save Error");
+                    });
+                }
+                forked.kill(2);
             }
-            forked.kill(2);
+          
         });
-        forked.send(ob);
+        
         
 
     }

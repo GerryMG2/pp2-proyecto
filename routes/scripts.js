@@ -33,7 +33,7 @@ router.get("/", function (req, res, next) {
         fs.readdir(scriptFolder, (err, files) => {
             files.forEach(file => {
                 console.log(file);
-                if (file != "lib.js" && file != "scriptPrueba") {
+                if (file != "lib.js" && file != "scriptPrueba" && file != "dbM.js" && file != "externalModels") {
                     aux.push(file);
                 }
 

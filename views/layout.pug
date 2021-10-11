@@ -5,19 +5,19 @@ head
   meta(name='description' content='')
   meta(name='author' content='')
   link(rel='icon' href='../../../../favicon.ico')
-  title Dashboard Template for Bootstrap
+  title Admin
   // Bootstrap core CSS
   link(href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" rel='stylesheet')
   // Custom styles for this template
   link(href='/stylesheets/dashboard.css' rel='stylesheet')
-nav.navbar.navbar-dark.sticky-top.bg-dark.flex-md-nowrap.p-0
-  a.navbar-brand.col-sm-3.col-md-2.mr-0(href='#') Company name
+nav.navbar.navbar-dark.sticky-top.bg-dark.flex-md-nowrap.p-0(style="height: 5%")
+  a.navbar-brand.col-sm-3.col-md-2.mr-0(href='#') BLITZ
   input.form-control.form-control-dark.w-100(type='text' placeholder='Search' aria-label='Search')
   ul.navbar-nav.px-3
     li.nav-item.text-nowrap
       a.nav-link(href='#') Sign out
-.container-fluid
-  .row
+.container-fluid(style="height: 95%")
+  .row(style="height: 100%")
     nav.col-md-2.d-none.d-md-block.bg-light.sidebar
       .sidebar-sticky
         ul.nav.flex-column
@@ -30,9 +30,12 @@ nav.navbar.navbar-dark.sticky-top.bg-dark.flex-md-nowrap.p-0
               |                   Error List 
             a.nav-link.active(href='/scripts')
               span(data-feather='code')
-              |                   Scripts 
+              |                   Scripts
+            a.nav-link.active(href='/network')
+              span(data-feather='cpu')
+              |                   Arquitecture
           
-    main.col-md-9.ml-sm-auto.col-lg-10.pt-3.px-4(role='main')
+    main.col-md-9.ml-sm-auto.col-lg-10.pt-3.px-4(role='main' style="height: 100%")
       block content
       
 

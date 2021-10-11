@@ -16,7 +16,7 @@ block content
       input#hostInput.form-control(type='text' aria-describedby='hostHelp' name="username" placeholder='Username'  value=model.username)
     .form-group
       label(for='database') Database
-      input#hostInput.form-control(type='text' aria-describedby='hostHelp' name="database" placeholder='Database'  value=model.database)
+      input#hostInput.form-control(type='text' aria-describedby='hostHelp' name="database_name" placeholder='Database'  value=model.database_name)
     .form-group
       label(for='port') Port Number
       input#hostInput.form-control(type='text' aria-describedby='PortHelp' name="port" placeholder='Port' value=model.port)
@@ -40,4 +40,6 @@ block content
           .container 
             a.btn.btn-primary.btn-sm.mb-1(href=`/db/${val._id}`) Edit
             a.btn.btn-sm.btn-danger.ml-1.mb-1(href=`/db/${val._id}/delete`) Delete
-
+            a.ml-1.mb-1(href="#" onclick='copyfn('+'"'+ val._id +'"'+')') Copy Id
+block content_scripts
+  script(src="/javascripts/index.js")

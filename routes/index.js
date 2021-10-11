@@ -1,5 +1,4 @@
 var express = require('express');
-const db = require('../db');
 const dbs = require('../models/dbs');
 const dbErr = require("../models/errors");
 var router = express.Router();
@@ -82,8 +81,8 @@ router.post('/db/test', async function (req, res, next) {
   try {
     
     let dbClass = require("../utils/postgres");
-    console.log(`postgresql://${model.username}:${model.password}@${model.host}:${model.port}/${model.database}`);
-    let dbGenerator = new dbClass(`postgresql://${model.username}:${model.password}@${model.host}:${model.port}/${model.database}`);
+    console.log(`postgresql://${model.username}:${model.password}@${model.host}:${model.port}/${model.database_name}`);
+    let dbGenerator = new dbClass(`postgresql://${model.username}:${model.password}@${model.host}:${model.port}/${model.database_name}`);
     
     let auxdb = dbGenerator.getdb();
     const c = await auxdb.connect();

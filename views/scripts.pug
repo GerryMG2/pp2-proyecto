@@ -19,8 +19,8 @@ block content
               td.u-table-cell=val.split(".")[0]
               td.u-table-cell=val.split(".")[1]
               td.u-table-cell
-                a(href=`/scripts/${val.split(".")[0]}` type="button" id="errorbtn" onclick='showLog('+'"'+ val.log +'"'+')' class="btn btn-warning btn-sm") Edit
-                button(href='' type="button" onclick='deleteE('+'"'+ val._id +'"'+')' class="btn btn-danger btn-sm") Delete
-                buttom(href='' type="button" class="btn btn-info btn-sm") Duplicar
+                a(href=`/scripts/${val.split(".")[0]}` type="button" id="errorbtn" onclick='showLog('+'"'+ val.log +'"'+')' class="btn btn-warning btn-sm m-1") Edit
+                button(href='' type="button" onclick='deleteE('+'"'+ val._id +'"'+')' class="btn btn-danger btn-sm m-1") Delete
+                buttom(href='' type="button" class="btn btn-info btn-sm m-1") Duplicar
 block content_scripts
   script(src="/javascripts/main.js") 

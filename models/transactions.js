@@ -7,6 +7,10 @@ class transaction extends Document {
         this.script = String;
         this.connection = String;
         this.terminated = Boolean;
+        this.date = {
+            type: Date,
+            default: Date.now
+        }
     }
 
     static collectionName() {
