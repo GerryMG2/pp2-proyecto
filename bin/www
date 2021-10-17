@@ -1,5 +1,5 @@
 const sv = require("./server");
-
+const io = require("../socket");
 sv.server.listen(sv.port);
 sv.server.on('error', onError);
 sv.server.on('listening', onListening);

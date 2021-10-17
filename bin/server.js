@@ -4,9 +4,9 @@
  * Module dependencies.
  */
 
- var app = require('../app');
- var debug = require('debug')('chessserver:server');
- var http = require('http');
+ var {app,server,io} = require('../app');
+ var debug = require('debug')('BroadCastNode:server');
+
  
  /**
   * Get port from environment and store in Express.
@@ -19,7 +19,7 @@
   * Create HTTP server.
   */
  
- var server = http.createServer(app);
+
  
  module.exports.server = server;
  module.exports.port = port;

@@ -44,4 +44,13 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-module.exports = app;
+var http = require('http');
+const {Server} = require("socket.io");
+
+var server = http.createServer(app);
+const io = new Server(server,{});
+
+
+module.exports.server = server;
+module.exports.io = io;
+module.exports.app = app;
