@@ -1,0 +1,13 @@
+extends layout 
+    block content
+      table(class='table table-striped')
+        thead(style='height: 65px;' class="thead-light")
+            th.u-table-cell #
+            th.u-table-cell Name
+            th.u-table-cell Date 
+            th.u-table-cell url 
+            th.u-table-cell estado
+        tbody
+          each val,index in list
+block content_scripts
+    script(src="")
