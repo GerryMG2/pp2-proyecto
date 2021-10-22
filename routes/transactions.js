@@ -5,9 +5,12 @@ const ScriptManager = require('../utils/ScriptManager');
 var router = express.Router();
 const workerpool = require("workerpool");
 const pool = workerpool.pool("./utils/worker.js");
+const errors = require("../models/errors");
+
 
 
 router.post("/transaction", function (req, res, next) {
+    var io = req.app.get('socketio');
     try {
         console.log(req.body);
         let tran = transaction.create({
@@ -19,6 +22,7 @@ router.post("/transaction", function (req, res, next) {
 
         tran.save().then((L) => {
             console.log(L);
+            io.to("monitors").emit("add_transaction",{num: 1});
             pool.exec('rune', [{script: L.script,data: L.data, connection: L.connection, _id: L._id}]).then(function (result) {
                 console.log("resultado dentro del worker");
                 
@@ -42,4 +46,25 @@ router.post("/transaction", function (req, res, next) {
 
 });
 
+
+router.get("/transactions",function(req,res,next){
+    try {
+        console.log("transacciones");
+        transaction.count({}).then((num) => {
+            errors.count({}).then((numerr) => {
+                res.status(200).json({transacciones: num,errores: numerr});
+            }).catch((err) =>{
+                throw "error obteniendo el numero de errores";
+            })
+        }).catch((err)=>{
+            throw "error obteniendo el numero de transacciones";
+        });
+      
+
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({transacciones: 0,errores: 0});
+    }
+});
 module.exports = router;

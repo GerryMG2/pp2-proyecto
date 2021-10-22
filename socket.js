@@ -1,6 +1,7 @@
 const { io } = require("./app");
 const workerpool = require("workerpool");
 const pool = workerpool.pool("./utils/worker.js");
+const transaction = require("./models/transactions");
 
 console.log("io");
 io.on('connection', (socket) => {
@@ -31,6 +32,41 @@ io.on('connection', (socket) => {
             console.log("a user disconnected");
         });
 
+        socket.on("transaction", (trans) => {
+            try {
+                console.log("transaction " + trans);
+                let tran = transaction.create({
+                    script: trans.script,
+                    data: trans.data,
+                    connection: trans.connection,
+                    terminated: false
+                })
+        
+                tran.save().then((L) => {
+                    console.log(L);
+                    io.to("monitors").emit("add_transaction",{num: 1});
+                    pool.exec('rune', [{ script: L.script, data: L.data, connection: L.connection, _id: L._id }]).then(function (result) {
+                        console.log("resultado dentro del worker");
+        
+                    })
+                        .catch(function (err) {
+                            console.log(err);
+        
+                        })
+        
+        
+                }).catch((e) => {
+                    console.log(e)
+                });
+        
+        
+        
+            } catch (error) {
+                console.log(error);
+        
+            }
+        });
+
     }
 
 
@@ -39,39 +75,7 @@ io.on('connection', (socket) => {
 
 
 
-io.on("transaction", (trans) => {
-    try {
-        console.log(trans);
-        let tran = transaction.create({
-            script: trans.script,
-            data: trans.data,
-            connection: trans.connection,
-            terminated: false
-        })
 
-        tran.save().then((L) => {
-            console.log(L);
-            pool.exec('rune', [{ script: L.script, data: L.data, connection: L.connection, _id: L._id }]).then(function (result) {
-                console.log("resultado dentro del worker");
-
-            })
-                .catch(function (err) {
-                    console.log(err);
-
-                })
-
-
-        }).catch((e) => {
-            console.log(e)
-        });
-
-
-
-    } catch (error) {
-        console.log(error);
-
-    }
-});
 
 
 

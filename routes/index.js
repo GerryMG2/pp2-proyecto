@@ -4,7 +4,6 @@ const dbErr = require("../models/errors");
 var router = express.Router();
 
 
-
 /* GET home page. */
 router.get('/db', function (req, res, next) {
   try {
@@ -98,9 +97,11 @@ router.post('/db/test', async function (req, res, next) {
 });
 
 router.get('/errlist/:id', function (req, res, next) {
+  var io = req.app.get('socketio');
   try {
     listdbs = [];
     dbErr.deleteOne({_id: req.params.id}).then(function(numrRemoven){
+      io.to("monitors").emit("sustract",{num: 1});
       res.redirect("/errlist");
     })
 
@@ -110,6 +111,18 @@ router.get('/errlist/:id', function (req, res, next) {
 
 });
 
+
+router.get("/adderrors", function(req,res,next){
+
+  try {
+    var io = req.app.get('socketio');
+    io.to("monitors").emit("sustract",{num: -1});
+    res.status(200).json({msg: "gracias"});
+  } catch (error) {
+    res.status(500).json({msg: "no gracias"});
+  }
+
+});
 
 
 

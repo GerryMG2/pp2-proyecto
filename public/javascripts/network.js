@@ -1,5 +1,8 @@
 
 
+
+
+
 var canvas = document.getElementById("canvas");
 canvas.width = document.getElementById("canvas").getBoundingClientRect().width;
 canvas.height = document.getElementById("canvas").getBoundingClientRect().height;
@@ -7,7 +10,8 @@ canvas.height = document.getElementById("canvas").getBoundingClientRect().height
 var halfx = canvas.width / 2;
 var halfy = canvas.height / 2;
 var escala = 0.25;
-
+var transacciones = 0;
+var errores = 0;
 function preventDefault(event) {
     event.preventDefault();
     return false;
@@ -42,6 +46,14 @@ nucleoServer.draggable = true;
 
 group.add(nucleoServer);
 
+
+var text_transactions = new Escher.MultiLineText();
+text_transactions.layer = 3;
+text_transactions.text = `Central Server\nTransactions: ${transacciones} | Errors to solve: ${errores}`;
+text_transactions.align = "center";
+text_transactions.font = "60px Comic Sans MS";
+nucleoServer.add(text_transactions);
+
 var viewport = new Escher.Viewport(canvas);
 
 var renderer = new Escher.Renderer(canvas);
@@ -53,7 +65,8 @@ var he;
 img.onload = function () {
     console.log(halfx);
     nucleoServer.position.set(halfx - (this.width * escala * 0.5), halfy - (this.height * escala * 0.5));
-    nucleoServer.origin = new Escher.Vector2(this.width * escala,this.height * escala);
+    text_transactions.position.set(this.width  * 0.25,this.height * 0.5 + 20);
+    nucleoServer.origin = new Escher.Vector2(this.width * escala, this.height * escala);
     wi = this.width;
     he = this.height;
 }
@@ -63,15 +76,19 @@ var list = [];
 
 function add_app(id) {
 
-    
+
     var aux_app = new Escher.Image("images/nave.png");
     aux_app.scale = new Escher.Vector2(escala, escala);
-    aux_app.origin  = new Escher.Vector2(wi * escala,he * escala);
+    aux_app.origin = new Escher.Vector2(wi * escala, he * escala);
     aux_app.layer = 2;
     aux_app.draggable = true;
+
+
+
+
     group.add(aux_app);
 
-  
+
 
     var line = new Escher.NodeConnector();
     line.from = nucleoServer.position;
@@ -133,3 +150,33 @@ socket.on("all_apps", (list) => {
     console.log(list);
 });
 
+socket.on("sustract", (obj) => {
+    console.log(obj);
+    errores -= obj.num;
+    updateText();
+});
+
+socket.on("add_transaction",(obj) => {
+    console.log(obj);
+    transacciones += obj.num;
+    updateText();
+});
+
+
+function updateText(){
+    text_transactions.text = `Central Server\nTransactions: ${transacciones} | Errors to solve: ${errores}`;
+}
+
+function initData() {
+    fetch('/transactions')
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            transacciones = data.transacciones;
+            errores = data.errores;
+            updateText();
+
+        });
+}
+
+initData();

@@ -22,6 +22,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/',transactionRouter);
@@ -49,6 +50,8 @@ const {Server} = require("socket.io");
 
 var server = http.createServer(app);
 const io = new Server(server,{});
+
+app.set('socketio', io);
 
 
 module.exports.server = server;
