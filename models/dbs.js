@@ -8,7 +8,8 @@ class dbs extends Document {
         this.port = String, 
         this.username = String, 
         this.password = String,
-        this.name = String
+        this.name = String,
+        this.options = String
     }
 
     static collectionName() {

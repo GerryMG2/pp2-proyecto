@@ -18,6 +18,8 @@ function init(data, db, cb) {
                 throw `${re.rowCount} rows were updated`;
             }
 
+            
+
         }).then((d) => {
             console.log(d);
             cb(true, "Datos actualizados");

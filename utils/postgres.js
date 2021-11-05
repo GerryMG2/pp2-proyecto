@@ -27,7 +27,7 @@ class postgressDB {
         if(this.db != null){
             return this.db;
         }else{
-            this.db = this.pgp({connectionString: this.URI,ssl: this.ssl});
+            this.db = this.pgp({connectionString: this.URI  ,ssl: this.ssl});
             return this.db;
         }
     }

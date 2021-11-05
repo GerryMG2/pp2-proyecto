@@ -80,8 +80,8 @@ router.post('/db/test', async function (req, res, next) {
   try {
     
     let dbClass = require("../utils/postgres");
-    console.log(`postgresql://${model.username}:${model.password}@${model.host}:${model.port}/${model.database_name}`);
-    let dbGenerator = new dbClass(`postgresql://${model.username}:${model.password}@${model.host}:${model.port}/${model.database_name}`);
+    console.log(`postgresql://${model.username}:${model.password}@${model.host}:${model.port}/${model.database_name}${model.options}`);
+    let dbGenerator = new dbClass(`postgresql://${model.username}:${model.password}@${model.host}:${model.port}/${model.database_name}${model.options}`);
     
     let auxdb = dbGenerator.getdb();
     const c = await auxdb.connect();
@@ -140,7 +140,13 @@ router.post('/db', function (req, res, next) {
         res.redirect("/db");
       });
     }else{
-      dbs.findOneAndUpdate({ _id: mod._id }, mod, { upsert: true }).then(function (l) {
+     
+      var auxid = mod._id;
+      delete mod._id;
+      console.log(mod);
+      dbs.findOneAndUpdate({ _id: auxid }, {host: mod.host, port: mod.port, database_name: mod.database_name,
+      name: mod.name, username: mod.username, password: mod.password, options: mod.options}, { }).then(function (l) {
+        console.log(l);
         console.log("update correctly");
         res.redirect("/db");
       });

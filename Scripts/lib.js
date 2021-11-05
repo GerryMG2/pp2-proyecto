@@ -27,11 +27,13 @@ function init(run) {
                 dbs.findOne({ _id: msg.conn }).then((L) => {
                     console.log("antes de prostgresql");
                     let dbClass = require("../utils/postgres");
-                    console.log(`postgresql://${L.username}:${L.password}@${L.host}:${L.port}/${L.database_name}`);
-                    let dbGenerator = new dbClass(`postgresql://${L.username}:${L.password}@${L.host}:${L.port}/${L.database_name}`);
+                    console.log(`postgresql://${L.username}:${L.password}@${L.host}:${L.port}/${L.database_name}${L.options}`);
+                    let dbGenerator = new dbClass(`postgresql://${L.username}:${L.password}@${L.host}:${L.port}/${L.database_name}${L.options}`);
                     let auxdb = dbGenerator.getdb();
     
                     run(msg.data, auxdb, (value, log) => {
+                        console.log("log");
+                        console.log(log);
                         auxdb.$pool.end();
                         if (value) {
     
@@ -56,6 +58,7 @@ function init(run) {
         });
     }).catch((err)=>{
         console.log(err);
+        process.send({ status: false, log: err });
     });
 
    

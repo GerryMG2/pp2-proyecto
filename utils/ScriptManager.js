@@ -33,7 +33,7 @@ class ScriptManager {
                     console.log("msg: ")
                     console.log(msg);
                     if (msg.status) {
-
+                        console.log("estatus ok");
                     } else {
 
                         let err = errors.create({
