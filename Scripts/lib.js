@@ -39,13 +39,14 @@ function init(run) {
     
                             process.send({ status: true })
                         } else {
-                            process.send({ status: false, log: log });
+                            process.send({ status: false, log: log.toString() });
                         }
                     });
     
                 }).catch((err) => {
-                    console.log(err);
-                    process.send({ status: false, log: err });
+                    console.log("no existe la conexion");
+                    console.log(err.toString());
+                    process.send({ status: false, log: "no existe la conexion" });
                 });
     
     

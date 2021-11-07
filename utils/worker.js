@@ -9,7 +9,7 @@ function rune(obj) {
 
     ScriptManager.run(obj);
 
-
+    console.log("scrip pro");
     return 1;
 
 }
