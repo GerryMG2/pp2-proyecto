@@ -1,4 +1,4 @@
-const blitz = require("./lib");
+
 const pgPromise = require("pg-promise")
 
 
@@ -83,4 +83,4 @@ function init(data, db, cb) {
 
 
 
-blitz.init(init);
+module.exports = init;

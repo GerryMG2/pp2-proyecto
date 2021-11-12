@@ -1,4 +1,4 @@
-const blitz = require("./lib");
+
 const pgPromise = require("pg-promise")
 
 

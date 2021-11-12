@@ -34,45 +34,35 @@ class ScriptManager {
                     conn: obj.connection
                 }
 
-                var connect = require('camo').connect;
-                const { URI_MONGO } = require("../config");
-                var db;
-                var uri = URI_MONGO;
-                console.log(URI_MONGO);
-                connect(uri).then(function (dbd) {
-                    console.log("dentro del uri");
-                    db = dbd;
-
-
-                    console.log("entra al try")
-                    dbs.findOne({ _id: ob.conn }).then((L) => {
-                        console.log("antes de prostgresql");
-                        let dbClass = require("../utils/postgres");
-                        console.log(`postgresql://${L.username}:${L.password}@${L.host}:${L.port}/${L.database_name}${L.options}`);
-                        let dbGenerator = new dbClass(`postgresql://${L.username}:${L.password}@${L.host}:${L.port}/${L.database_name}${L.options}`);
-                        let auxdb = dbGenerator.getdb();
-
-                        fun(ob.data, auxdb, (value, log) => {
-                            console.log("log");
-                            console.log(log);
-                            auxdb.$pool.end();
-                            if (value) {
-
-                                return;
-                            } else {
-                                throw log.toString();
-                            }
-                        });
 
 
 
+                console.log("entra al try")
+                dbs.findOne({ _id: ob.conn }).then((L) => {
+                    console.log("antes de prostgresql");
+                    let dbClass = require("../utils/postgres");
+                    console.log(`postgresql://${L.username}:${L.password}@${L.host}:${L.port}/${L.database_name}${L.options}`);
+                    let dbGenerator = new dbClass(`postgresql://${L.username}:${L.password}@${L.host}:${L.port}/${L.database_name}${L.options}`);
+                    let auxdb = dbGenerator.getdb();
 
+                    fun(ob.data, auxdb, (value, log) => {
+                        console.log("log");
+                        console.log(log);
+                        auxdb.$pool.end();
+                        if (value) {
 
+                            return;
+                        } else {
+                            throw log.toString();
+                        }
                     });
-                }).catch((err) => {
-                    console.log(err);
-                    throw err.toString();
+
+
+
+
+
                 });
+
 
 
 
