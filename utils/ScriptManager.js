@@ -1,6 +1,7 @@
 
-const { fork,spawnSync } = require('child_process');
-const db = require("./dbM");
+const { fork, spawnSync } = require('child_process');
+
+const dbs = require("./externalModels/dbs");
 const errors = require("./externalModels/errors");
 const request = require("request");
 const { URL } = require("../config");
@@ -27,78 +28,55 @@ class ScriptManager {
             if (fs.existsSync("./Scripts/" + obj.script)) {
                 console.log("exists");
                 console.log("pre forked");
-                let forked = fork("./Scripts/" + obj.script, [], {
-                    
-                });
+                let fun = require(`../Scripts/${obj.script}`)
                 let ob = {
                     data: obj.data,
                     conn: obj.connection
                 }
-                console.log("pro forked");
 
-             
-                
-                forked.on("error", (erri) => {
-                    console.log("error de script");
-                    console.log(erri);
-                    let err = errors.create({
-                        script: obj.script,
-                        log: erri,
-                        data: obj.data,
-                        idTransaction: obj._id.id
-                    });
+                var connect = require('camo').connect;
+                const { URI_MONGO } = require("../config");
+                var db;
+                var uri = URI_MONGO;
+                console.log(URI_MONGO);
+                connect(uri).then(function (dbd) {
+                    console.log("dentro del uri");
+                    db = dbd;
 
-                    err.save().then((L) => {
-                        console.log(URL + '/adderrors');
-                        request(URL + '/adderrors', function (error, response, body) {
-                            console.log(response);
-                            console.log(error);
-                            if (!error && response.statusCode == 200) {
-                                console.log(body) // Print the google web page.
+
+                    console.log("entra al try")
+                    dbs.findOne({ _id: msg.conn }).then((L) => {
+                        console.log("antes de prostgresql");
+                        let dbClass = require("../utils/postgres");
+                        console.log(`postgresql://${L.username}:${L.password}@${L.host}:${L.port}/${L.database_name}${L.options}`);
+                        let dbGenerator = new dbClass(`postgresql://${L.username}:${L.password}@${L.host}:${L.port}/${L.database_name}${L.options}`);
+                        let auxdb = dbGenerator.getdb();
+
+                        fun(msg.data, auxdb, (value, log) => {
+                            console.log("log");
+                            console.log(log);
+                            auxdb.$pool.end();
+                            if (value) {
+
+                                return;
+                            } else {
+                                throw log.toString();
                             }
-                        })
-                        console.log("save Error");
-                    }).catch((err) => {
-                        console.log(err);
+                        });
+
+
+
+
+
                     });
+                }).catch((err) => {
+                    console.log(err);
+                    throw err.toString();
                 });
-                console.log("pro2 forked");
-                forked.on("message", (msg) => {
-                    console.log("pro5 forked");
-                    if (msg.send) {
-                        forked.send(ob);
-                    } else {
-                        console.log("msg: ")
-                        console.log(msg);
-                        if (msg.status) {
-                            console.log("estatus ok");
-                        } else {
 
-                            let err = errors.create({
-                                script: obj.script,
-                                log: msg.log,
-                                data: obj.data,
-                                idTransaction: obj._id.id
-                            });
 
-                            err.save().then((L) => {
-                                console.log(URL + '/adderrors');
-                                request(URL + '/adderrors', function (error, response, body) {
-                                   
-                                    console.log(error);
-                                    if (!error && response.statusCode == 200) {
-                                        console.log(body) // Print the google web page.
-                                    }
-                                })
-                                console.log("save Error");
-                            });
-                        }
-                        forked.kill(2);
-                    }
 
-                });
-                console.log("pro4 forked");
-            }else{
+            } else {
                 console.log("no existe");
                 let err = errors.create({
                     script: obj.script,
@@ -110,7 +88,7 @@ class ScriptManager {
                 err.save().then((L) => {
                     console.log(URL + '/adderrors');
                     request(URL + '/adderrors', function (error, response, body) {
-                        
+
                         console.log(error);
                         if (!error && response.statusCode == 200) {
                             console.log(body) // Print the google web page.

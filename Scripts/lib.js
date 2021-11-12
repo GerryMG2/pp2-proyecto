@@ -18,11 +18,6 @@ function init(run) {
         process.on('message', (msg) => {
             console.log('Message from parent:', msg);
             try {
-                dbs.find({}, {}).then((L) => {
-                    console.log(L);
-                }).catch((err) => {
-                    console.log(err);
-                });
                 console.log("entra al try")
                 dbs.findOne({ _id: msg.conn }).then((L) => {
                     console.log("antes de prostgresql");

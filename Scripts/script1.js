@@ -38,7 +38,7 @@ function init(data, db, cb) {
 
 
 
+module.exports = init;
 
 
-
-blitz.init(init);
+// blitz.init(init);
