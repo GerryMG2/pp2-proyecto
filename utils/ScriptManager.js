@@ -1,5 +1,5 @@
 
-const { fork } = require('child_process');
+const { fork,spawnSync } = require('child_process');
 const db = require("./dbM");
 const errors = require("./externalModels/errors");
 const request = require("request");
@@ -28,7 +28,7 @@ class ScriptManager {
                 console.log("exists");
                 console.log("pre forked");
                 let forked = fork("./Scripts/" + obj.script, [], {
-
+                    
                 });
                 let ob = {
                     data: obj.data,
@@ -37,7 +37,7 @@ class ScriptManager {
                 console.log("pro forked");
 
              
-
+                
                 forked.on("error", (erri) => {
                     console.log("error de script");
                     console.log(erri);

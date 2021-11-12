@@ -3,7 +3,7 @@ const ScriptManager = require("./ScriptManager");
 
 const transaction = require("../models/transactions");
 
-function rune(obj) {
+async function rune(obj) {
     console.log(typeof obj);
     console.log("entra la transaction");
 
@@ -19,7 +19,7 @@ workerpool.worker({
 });
 
 
-const pool = workerpool.pool();
+
 
 
 

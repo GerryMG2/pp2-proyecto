@@ -1,6 +1,6 @@
 const { io } = require("./app");
 const workerpool = require("workerpool");
-const pool = workerpool.pool("./utils/worker.js");
+const pool = workerpool.pool("./utils/worker.js",{maxWorkers: 2});
 const transaction = require("./models/transactions");
 
 console.log("io");
