@@ -11,6 +11,8 @@ var halfx = canvas.width / 2;
 var halfy = canvas.height / 2;
 var escala = 0.25;
 var transacciones = 0;
+var pending = 0;
+var active = 0;
 var errores = 0;
 function preventDefault(event) {
     event.preventDefault();
@@ -65,7 +67,7 @@ var he;
 img.onload = function () {
     console.log(halfx);
     nucleoServer.position.set(halfx - (this.width * escala * 0.5), halfy - (this.height * escala * 0.5));
-    text_transactions.position.set(this.width  * 0.25,this.height * 0.5 + 20);
+    text_transactions.position.set(this.width * 0.25, this.height * 0.5 + 20);
     nucleoServer.origin = new Escher.Vector2(this.width * escala, this.height * escala);
     wi = this.width;
     he = this.height;
@@ -156,15 +158,17 @@ socket.on("sustract", (obj) => {
     updateText();
 });
 
-socket.on("add_transaction",(obj) => {
+socket.on("add_transaction", (obj) => {
     console.log(obj);
     transacciones += obj.num;
+    pending = obj.stats.pendingTasks;
+    active = obj.stats.activeTasks;
     updateText();
 });
 
 
-function updateText(){
-    text_transactions.text = `Central Server\nTransactions: ${transacciones} | Errors to solve: ${errores}`;
+function updateText() {
+    text_transactions.text = `Central Server\nTransactions: ${transacciones} | Errors to solve: ${errores}\nPending Tasks: ${pending} | Active Tasks: ${active}`;
 }
 
 function initData() {
@@ -180,3 +184,15 @@ function initData() {
 }
 
 initData();
+
+setInterval(() => {
+    fetch('/stats')
+        .then(response => response.json())
+        .then(data => {
+
+            pending = data.pendingTasks;
+            active = data.activeTasks;
+            updateText();
+
+        });
+}, 5000);

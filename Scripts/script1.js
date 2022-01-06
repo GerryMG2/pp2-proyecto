@@ -10,7 +10,9 @@ const pgPromise = require("pg-promise")
  */
 function init(data, db, cb) {
     console.log("executing");
+    console.log(db);
     if (data.client_id != null && data.client_id != undefined) {
+        
         db.tx(async t => {
             const re = await db.result("update dim_cliente set nombre = $1 where sk_cliente = $2", [data.name, data.client_id]);
             console.log(re.rowCount);

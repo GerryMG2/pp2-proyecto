@@ -44,7 +44,7 @@ io.on('connection', (socket) => {
         
                 tran.save().then((L) => {
                     console.log(L);
-                    io.to("monitors").emit("add_transaction",{num: 1});
+                    io.to("monitors").emit("add_transaction",{num: 1, stats: pool.stats()});
                     pool.exec('rune', [{ script: L.script, data: L.data, connection: L.connection, _id: L._id }]).then(function (result) {
                         console.log("resultado dentro del worker");
         

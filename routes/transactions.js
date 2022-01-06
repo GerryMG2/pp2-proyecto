@@ -4,7 +4,7 @@ const transaction = require('../models/transactions');
 const ScriptManager = require('../utils/ScriptManager');
 var router = express.Router();
 const workerpool = require("workerpool");
-const pool = workerpool.pool("./utils/worker.js",{maxWorkers: 2});
+const pool = workerpool.pool("./utils/worker.js",{maxWorkers: 1});
 const errors = require("../models/errors");
 
 
@@ -22,7 +22,7 @@ router.post("/transaction", function (req, res, next) {
 
         tran.save().then((L) => {
             console.log(L);
-            io.to("monitors").emit("add_transaction",{num: 1});
+            io.to("monitors").emit("add_transaction",{num: 1, stats: pool.stats()});
             res.status(200).json({ receive: true });
             
             pool.exec('rune', [{script: L.script,data: L.data, connection: L.connection, _id: L._id}]).then(function (result) {
@@ -35,7 +35,8 @@ router.post("/transaction", function (req, res, next) {
                 })
 
             
-        }).catch(()=>{
+        }).catch((e)=>{
+            console.log(e);
             res.status(500).json({ receive: false });
         });
 
@@ -69,4 +70,9 @@ router.get("/transactions",function(req,res,next){
         res.status(500).json({transacciones: 0,errores: 0});
     }
 });
+
+
+router.get("/stats",function(req,res,next){
+    res.status(200).json( pool.stats());
+})
 module.exports = router;
